@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+    <persistence-unit name="apmProfilePersistenceUnit" transaction-type="RESOURCE_LOCAL">
+
+        <description>Persistence Unit</description>
+
+        <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+        <properties>
+            <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
+            <!--<property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)"/>-->
+            <property name="openjpa.DataCache" value="false" />
+            <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=ERROR, Tool=ERROR, SQL=WARN" />
+            <property name="openjpa.jdbc.DBDictionary" value="postgres"/>
+            <property name="openjpa.jdbc.Schema" value="apm_template"/>
+            <property name="openjpa.Multithreaded" value="true" />
+            <property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=True"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
