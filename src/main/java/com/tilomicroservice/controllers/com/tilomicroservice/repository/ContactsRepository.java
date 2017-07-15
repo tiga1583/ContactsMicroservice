@@ -2,7 +2,6 @@ package com.tilomicroservice.controllers.com.tilomicroservice.repository;
 
 
 import com.tilomicroservice.controllers.com.tilomicroservice.model.Contact;
-import com.tilomicroservice.controllers.com.tilomicroservice.repository.IContactsRepository;
 
 import java.util.HashMap;
 import java.util.Random;

@@ -4,7 +4,7 @@ package com.tilomicroservice.controllers.com.tilomicroservice.model;
 //import javax.persistence.GenerationType;
 //import javax.persistence.Id;
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
 
 /**
  * Created by 212562776 on 7/13/17.
@@ -12,14 +12,14 @@ import java.util.Date;
 
 @Entity
 @Table(name="contacts")
-public class Contact {
+public class Contact implements Serializable {
     private static final long serialVersionUID = -3009157732242241606L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "firstname")
+    @Column(name = "fir stname")
     private String firstName;
 
     @Column(name= "lastname")
@@ -71,5 +71,10 @@ public class Contact {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return this.getId()+this.getFirstName()+this.getLastName()+this.getPhoneNumber()+this.getAddress();
     }
 }

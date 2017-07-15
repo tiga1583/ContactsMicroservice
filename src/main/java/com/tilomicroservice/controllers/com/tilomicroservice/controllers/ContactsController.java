@@ -2,8 +2,6 @@ package com.tilomicroservice.controllers.com.tilomicroservice.controllers;
 
 import com.tilomicroservice.controllers.com.tilomicroservice.model.Contact;
 import com.tilomicroservice.controllers.com.tilomicroservice.repository.IContactsRepository;
-import com.tilomicroservice.controllers.com.tilomicroservice.service.ContactsService;
-import com.tilomicroservice.controllers.com.tilomicroservice.service.IContactsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/v1/contacts")
 public class ContactsController {
-
 
     @Autowired
     IContactsRepository contactsRepository;
@@ -31,6 +28,18 @@ public class ContactsController {
             return new ResponseEntity<>(c, HttpStatus.OK);
         } catch (Exception e) {
             //Add logging
+            return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> saveContact(@RequestBody Contact contact, HttpServletRequest request) {
+        try {
+            contactsRepository.saveAndFlush(contact);
+            return new ResponseEntity<>("", HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

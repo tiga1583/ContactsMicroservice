@@ -1,6 +1,5 @@
 package com.tilomicroservice.controllers.com.tilomicroservice.service;
 
-import com.tilomicroservice.controllers.com.tilomicroservice.repository.ContactsRepository;
 import com.tilomicroservice.controllers.com.tilomicroservice.repository.IContactsRepository;
 import com.tilomicroservice.controllers.com.tilomicroservice.model.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
