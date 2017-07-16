@@ -19,7 +19,7 @@ public class Contact implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "fir stname")
+    @Column(name = "firstname")
     private String firstName;
 
     @Column(name= "lastname")

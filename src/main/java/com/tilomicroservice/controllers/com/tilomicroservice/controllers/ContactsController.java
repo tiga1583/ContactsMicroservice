@@ -4,10 +4,12 @@ import com.tilomicroservice.controllers.com.tilomicroservice.model.Contact;
 import com.tilomicroservice.controllers.com.tilomicroservice.repository.IContactsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/contacts")
@@ -36,10 +38,29 @@ public class ContactsController {
     @ResponseBody
     public ResponseEntity<?> saveContact(@RequestBody Contact contact, HttpServletRequest request) {
         try {
-            contactsRepository.saveAndFlush(contact);
+            contactsRepository.save(contact);
             return new ResponseEntity<>("", HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value= "/lastName",method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<?> getContactById(@RequestParam(value = "startsWith") String startsWith, HttpServletRequest request) {
+        try {
+
+            System.out.println("---- Reached here!!");
+            List<Contact> contactList = contactsRepository.findByLastNameStartsWithString(startsWith.toUpperCase());
+            System.out.println("----" + contactList.toString());
+
+            if(contactList == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(contactList, HttpStatus.OK);
+        } catch (Exception e) {
+            //Add logging
             return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

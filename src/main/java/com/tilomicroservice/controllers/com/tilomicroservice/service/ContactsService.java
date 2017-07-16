@@ -20,7 +20,7 @@ public class ContactsService implements IContactsService {
 
     @Override
     public Contact saveContact(Contact contact) throws Exception {
-        contactsRepository.saveAndFlush(contact);
+        contactsRepository.save(contact);
         return contactsRepository.findById(contact.getId());
     }
 
