@@ -13,6 +13,6 @@ import java.util.List;
 public interface IContactsRepository extends CrudRepository<Contact, Long> {
     Contact findById(int id);
 
-    @Query("SELECT t0 FROM Contact t0 WHERE UPPER(t0.lastName) like :startsWith%")
-    List<Contact> findByLastNameStartsWithString(@Param("startsWith") String startsWith);
+    @Query("SELECT t0 FROM Contact t0 WHERE UPPER(t0.phoneNumber) like :startsWith%")
+    List<Contact> findByPhoneNumberStartsWithString(@Param("startsWith") String startsWith);
 }

@@ -46,14 +46,16 @@ public class ContactsController {
         }
     }
 
-    @RequestMapping(value= "/lastName",method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    ResponseEntity<?> getContactById(@RequestParam(value = "startsWith") String startsWith, HttpServletRequest request) {
+    ResponseEntity<?> getContactById(@RequestParam(value = "areaCode") String areaCode, HttpServletRequest request) {
         try {
 
-            System.out.println("---- Reached here!!");
-            List<Contact> contactList = contactsRepository.findByLastNameStartsWithString(startsWith.toUpperCase());
-            System.out.println("----" + contactList.toString());
+            if (areaCode == null || "".equals(areaCode) || !areaCode.matches("^\\d{3}$")) {
+                return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), "Invalid areaCode", request.getRequestURI()), HttpStatus.BAD_REQUEST);
+            }
+
+            List<Contact> contactList = contactsRepository.findByPhoneNumberStartsWithString(areaCode);
 
             if(contactList == null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
