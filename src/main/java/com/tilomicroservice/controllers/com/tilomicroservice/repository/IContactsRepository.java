@@ -15,4 +15,8 @@ public interface IContactsRepository extends CrudRepository<Contact, Long> {
 
     @Query("SELECT t0 FROM Contact t0 WHERE UPPER(t0.phoneNumber) like :startsWith%")
     List<Contact> findByPhoneNumberStartsWithString(@Param("startsWith") String startsWith);
+
+    @Query("SELECT t0 FROM Contact t0 WHERE t0.address like %:state%")
+    List<Contact> findAddressContainingState(@Param("state") String state);
+
 }

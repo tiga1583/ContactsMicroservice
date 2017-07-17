@@ -3,6 +3,8 @@ package com.tilomicroservice.controllers.com.tilomicroservice.model;
 //import javax.persistence.GeneratedValue;
 //import javax.persistence.GenerationType;
 //import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -82,6 +84,22 @@ public class Contact implements Serializable {
     public void setLastContacted(Date lastContacted) {
         this.lastContacted = lastContacted;
     }
+
+    @JsonIgnore
+    public boolean isValid() {
+
+        boolean isValid = true;
+        if (this.getPhoneNumber() != null) {
+            isValid = this.getPhoneNumber().matches("\\d{10}");
+        }
+
+        if (isValid && this.getAddress() != null) {
+            isValid = this.getAddress().matches("^.*, [A-Z]{2}, \\d{5}$");
+        }
+
+        return isValid;
+    }
+
 
     @Override
     public String toString() {

@@ -54,6 +54,11 @@ public class ContactsController {
         if (!contact.getId().equals(id)) {
             return new ResponseEntity<>(new ErrorResponse(HttpStatus.CONFLICT.toString(), "Invalid contact id", request.getRequestURI()), HttpStatus.CONFLICT);
         }
+
+        if (!contact.isValid()) {
+            return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), "Invalid contact", request.getRequestURI()), HttpStatus.BAD_REQUEST);
+        }
+
         try {
             return new ResponseEntity<>(contactsRepository.save(contact), HttpStatus.OK);
         } catch (Exception e) {
@@ -64,7 +69,7 @@ public class ContactsController {
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    ResponseEntity<?> getContactById(@RequestParam(value = "areaCode") String areaCode, HttpServletRequest request) {
+    ResponseEntity<?> getContactsWithAreaCode(@RequestParam(value = "areaCode") String areaCode, HttpServletRequest request) {
         try {
 
             if (areaCode == null || "".equals(areaCode) || !areaCode.matches("^\\d{3}$")) {
@@ -78,7 +83,28 @@ public class ContactsController {
             }
             return new ResponseEntity<>(contactList, HttpStatus.OK);
         } catch (Exception e) {
-            //Add logging
+            e.printStackTrace();
+            return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value="/address", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<?> getContactsWithState(@RequestParam(value = "state") String state, HttpServletRequest request) {
+        try {
+
+            if (state == null || "".equals(state) || !state.matches("^[A-Z]{2}$")) {
+                return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), "Invalid state", request.getRequestURI()), HttpStatus.BAD_REQUEST);
+            }
+
+            List<Contact> contactList = contactsRepository.findAddressContainingState(", "+state+",");
+
+            if(contactList == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(contactList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
