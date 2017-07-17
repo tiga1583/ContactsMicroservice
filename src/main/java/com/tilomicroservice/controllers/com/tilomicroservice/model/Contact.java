@@ -5,6 +5,7 @@ package com.tilomicroservice.controllers.com.tilomicroservice.model;
 //import javax.persistence.Id;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by 212562776 on 7/13/17.
@@ -31,7 +32,8 @@ public class Contact implements Serializable {
     @Column(name = "address")
     private String address;
 
-    //private Date lastContacted;
+    @Column(name = "last_contacted")
+    private Date lastContacted;
 
     public Integer getId() {
         return id;
@@ -71,6 +73,14 @@ public class Contact implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Date getLastContacted() {
+        return lastContacted;
+    }
+
+    public void setLastContacted(Date lastContacted) {
+        this.lastContacted = lastContacted;
     }
 
     @Override

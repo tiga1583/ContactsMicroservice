@@ -46,6 +46,22 @@ public class ContactsController {
         }
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> saveContact(@PathVariable("id") Integer id, @RequestBody Contact contact, HttpServletRequest request) {
+        if (contact.getId() == null || contact.getId() == 0) {
+            contact.setId(id);
+        }
+        if (!contact.getId().equals(id)) {
+            return new ResponseEntity<>(new ErrorResponse(HttpStatus.CONFLICT.toString(), "Invalid contact id", request.getRequestURI()), HttpStatus.CONFLICT);
+        }
+        try {
+            return new ResponseEntity<>(contactsRepository.save(contact), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), e.getMessage(), request.getRequestURI()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     ResponseEntity<?> getContactById(@RequestParam(value = "areaCode") String areaCode, HttpServletRequest request) {
