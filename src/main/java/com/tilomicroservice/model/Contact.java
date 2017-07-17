@@ -1,4 +1,4 @@
-package com.tilomicroservice.controllers.com.tilomicroservice.model;
+package com.tilomicroservice.model;
 //import javax.persistence.Entity;
 //import javax.persistence.GeneratedValue;
 //import javax.persistence.GenerationType;

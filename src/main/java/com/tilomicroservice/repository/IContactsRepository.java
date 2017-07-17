@@ -1,6 +1,6 @@
-package com.tilomicroservice.controllers.com.tilomicroservice.repository;
+package com.tilomicroservice.repository;
 
-import com.tilomicroservice.controllers.com.tilomicroservice.model.Contact;
+import com.tilomicroservice.model.Contact;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

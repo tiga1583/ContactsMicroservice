@@ -1,4 +1,4 @@
-package com.tilomicroservice.controllers.com.tilomicroservice.controllers;
+package com.tilomicroservice.controllers;
 
 
 import java.text.SimpleDateFormat;

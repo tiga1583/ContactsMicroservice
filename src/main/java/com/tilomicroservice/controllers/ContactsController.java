@@ -1,7 +1,7 @@
-package com.tilomicroservice.controllers.com.tilomicroservice.controllers;
+package com.tilomicroservice.controllers;
 
-import com.tilomicroservice.controllers.com.tilomicroservice.model.Contact;
-import com.tilomicroservice.controllers.com.tilomicroservice.repository.IContactsRepository;
+import com.tilomicroservice.model.Contact;
+import com.tilomicroservice.repository.IContactsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -67,7 +67,7 @@ public class ContactsController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value="/search/phoneNumber", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     ResponseEntity<?> getContactsWithAreaCode(@RequestParam(value = "areaCode") String areaCode, HttpServletRequest request) {
         try {
@@ -88,7 +88,7 @@ public class ContactsController {
         }
     }
 
-    @RequestMapping(value="/address", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value="/search/address", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     ResponseEntity<?> getContactsWithState(@RequestParam(value = "state") String state, HttpServletRequest request) {
         try {
