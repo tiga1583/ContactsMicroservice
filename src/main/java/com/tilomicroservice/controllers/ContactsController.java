@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -104,6 +105,34 @@ public class ContactsController {
             }
             return new ResponseEntity<>(contactList, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value="/search/lastContacted", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<?> getContactsWithLastContactedBetweenStartAndEndDates(@RequestParam(value = "start") String startDate, @RequestParam(value="end")String endDate, HttpServletRequest request) {
+        try {
+
+            if (startDate == null || endDate == null) {
+                return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), "Invalid date", request.getRequestURI()), HttpStatus.BAD_REQUEST);
+            }
+
+            Date startEpoch = new Date(Long.parseLong(startDate));
+            Date endEpoch = new Date(Long.parseLong(endDate));
+
+            List<Contact> contactList = contactsRepository.findByLastContactedBetween(startEpoch, endEpoch);
+
+            if (contactList == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(contactList, HttpStatus.OK);
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+            return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), "start and end should be milliseconds from epoch", request.getRequestURI()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
         }

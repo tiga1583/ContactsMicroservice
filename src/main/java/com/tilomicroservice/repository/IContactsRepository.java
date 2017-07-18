@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 //import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -18,5 +19,7 @@ public interface IContactsRepository extends CrudRepository<Contact, Long> {
 
     @Query("SELECT t0 FROM Contact t0 WHERE t0.address like %:state%")
     List<Contact> findAddressContainingState(@Param("state") String state);
+
+    List<Contact> findByLastContactedBetween(Date start, Date end);
 
 }
