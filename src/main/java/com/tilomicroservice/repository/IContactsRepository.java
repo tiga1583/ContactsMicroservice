@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
-//import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface IContactsRepository extends CrudRepository<Contact, Long> {
